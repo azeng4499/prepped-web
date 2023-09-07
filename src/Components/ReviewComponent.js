@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
@@ -16,6 +16,31 @@ import { useSelector } from "react-redux";
 
 const ReviewComponent = () => {
   const url = useSelector((state) => state.url);
+  const transcription = useSelector((state) => state.transcription);
+
+  const [strengthsPointers, setStrengthsPointers] = useState();
+  const [improvePointers, setImprovePointers] = useState();
+
+  const handleBackend = async () => {
+    await fetch("http://localhost:4000/completions", {
+      method: "POST",
+      body: JSON.stringify({
+        transcript: transcription,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res);
+        setStrengthsPointers(res.strengths);
+        setImprovePointers(res.improvements);
+      });
+  };
+
+  useEffect(() => {
+    handleBackend();
+  }, []);
 
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
@@ -31,7 +56,7 @@ const ReviewComponent = () => {
                   <div class="flex justify-center items-center gap-10px">
                     <AiOutlineFieldTime class="h-20px w-20px" />2 min 34 sec
                   </div>
-                  <div class="flex justify-center items-center gap-10px">
+                  <div class="flex justify-center items-center gap-10px select-none">
                     <CgTranscript class="h-20px w-20px" />
                     View Transcript
                   </div>
@@ -88,40 +113,23 @@ const ReviewComponent = () => {
                     height: "calc(100% - 60px)",
                   }}
                 >
-                  <Skeleton count={8} />
-                  {/* <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillPlusCircle
-                    class="w-25px h-25px mt-5px"
-                    color="green"
-                  />
-                  <div class="w-full h-content text-white">
-                    The response draws on specific initiatives and attributes of
-                    JPMorgan Chase, showing that the candidate has done their
-                    homework. This demonstrates genuine interest and dedication.
-                  </div>
-                </div>
-                <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillPlusCircle
-                    class="w-25px h-25px mt-5px"
-                    color="green"
-                  />
-                  <div class="w-full h-content text-white">
-                    By highlighting diversity, innovation, and professional
-                    growth, the answer aligns the candidate's personal values
-                    with those of the company, building common ground.
-                  </div>
-                </div>
-                <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillPlusCircle
-                    class="w-25px h-25px mt-5px"
-                    color="green"
-                  />
-                  <div class="w-full h-content text-white">
-                    The response successfully intertwines personal aspirations
-                    with professional goals, portraying a holistic view of the
-                    candidate's motivations.
-                  </div>
-                </div> */}
+                  {!strengthsPointers ? (
+                    <Skeleton count={8} />
+                  ) : (
+                    strengthsPointers.map((strength) => {
+                      return (
+                        <div class="w-full h-content flex justify-center items-start gap-10px">
+                          <AiFillPlusCircle
+                            class="w-25px h-25px mt-5px"
+                            color="green"
+                          />
+                          <div class="w-full h-content text-white">
+                            {strength}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>
@@ -139,32 +147,21 @@ const ReviewComponent = () => {
                     height: "calc(100% - 60px)",
                   }}
                 >
-                  <Skeleton count={8} />
-                  {/* <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillMinusCircle class="w-25px h-25px mt-5px" color="red" />
-                  <div class="w-full h-content text-white">
-                    The answer, while thorough, can be perceived as lengthy. A
-                    more concise response might be more impactful, especially in
-                    a time-constrained interview setting.
-                  </div>
-                </div>
-                <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillMinusCircle class="w-25px h-25px mt-5px" color="red" />
-                  <div class="w-full h-content text-white">
-                    While the answer touches on the broad tech initiatives, it
-                    doesn't delve into how the specific software engineer role
-                    fits into these initiatives or the candidate's expertise in
-                    relevant technologies.
-                  </div>
-                </div>
-                <div class="w-full h-content flex justify-center items-start gap-10px">
-                  <AiFillMinusCircle class="w-25px h-25px mt-5px" color="red" />
-                  <div class="w-full h-content text-white">
-                    Incorporating past quantifiable achievements or experiences
-                    that align with the candidate's motivations to work for
-                    JPMorgan Chase could add more credibility to the response.
-                  </div>
-                </div> */}
+                  {!improvePointers ? (
+                    <Skeleton count={8} />
+                  ) : (
+                    improvePointers.map((aoi) => {
+                      return (
+                        <div class="w-full h-content flex justify-center items-start gap-10px">
+                          <AiFillMinusCircle
+                            class="w-25px h-25px mt-5px"
+                            color="red"
+                          />
+                          <div class="w-full h-content text-white">{aoi}</div>
+                        </div>
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>

@@ -4,3 +4,10 @@ export const setVideoUrl = (url) => {
     payload: url,
   };
 };
+
+export const setTranscription = (transcription) => {
+  return {
+    type: "SET_TRANSCRIPTION",
+    payload: transcription,
+  };
+};

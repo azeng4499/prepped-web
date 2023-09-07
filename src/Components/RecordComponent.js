@@ -5,7 +5,7 @@ import { useTimer } from "use-timer";
 import { VscDebugStart } from "react-icons/vsc";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch } from "react-redux";
-import { setVideoUrl } from "../Store/Actions";
+import { setVideoUrl, setTranscription } from "../Store/Actions";
 import { GiFinishLine } from "react-icons/gi";
 
 const RecordComponent = () => {
@@ -40,7 +40,7 @@ const RecordComponent = () => {
     setSecOnesDisplay(Math.ceil(seconds % 10));
   }, [time, pause]);
 
-  const handleUpload = async () => {
+  const handleBackend = async () => {
     if (recordedVideoChunks.length) {
       const videoBlob = new Blob(recordedVideoChunks, {
         type: "video/webm",
@@ -60,12 +60,18 @@ const RecordComponent = () => {
       await fetch("http://localhost:4000/whisper", {
         method: "POST",
         body: formData,
-      });
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          dispatch(setTranscription(res.transcription));
+        });
     }
   };
 
   useEffect(() => {
-    handleUpload();
+    handleBackend();
   }, [recordedVideoChunks]);
 
   const handleStartCaptureClick = useCallback(() => {
