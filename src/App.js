@@ -87,12 +87,12 @@ function App() {
               audio={true}
               ref={webcamRef}
               muted={true}
-              class="border-black border-2 border-solid w-full h-full"
-              // videoConstraints={{
-              //   width: { min: 200, max: 200 },
-              //   height: { min: 450, max: 450 },
-              //   aspectRatio: "1.77",
-              // }}
+              class="border-black border-2 border-solid"
+              videoConstraints={{
+                width: { min: 200, max: 200 },
+                height: { min: 450, max: 450 },
+                aspectRatio: "1.77",
+              }}
             />
           </div>
         </div>
