@@ -21,12 +21,14 @@ const ReviewComponent = () => {
   const [strengthsPointers, setStrengthsPointers] = useState();
   const [improvePointers, setImprovePointers] = useState();
 
+  let formData = new FormData();
+  formData.append("transcript", transcription);
+
   const handleBackend = async () => {
+    console.log(transcription);
     await fetch("http://localhost:4000/completions", {
       method: "POST",
-      body: JSON.stringify({
-        transcript: transcription,
-      }),
+      body: formData,
     })
       .then((res) => {
         return res.json();
@@ -39,8 +41,10 @@ const ReviewComponent = () => {
   };
 
   useEffect(() => {
-    handleBackend();
-  }, []);
+    if (transcription) {
+      handleBackend();
+    }
+  }, [transcription]);
 
   return (
     <SkeletonTheme baseColor="#202020" highlightColor="#444">
