@@ -24,6 +24,7 @@ const RecordComponent = () => {
   const [minuteDisplay, setMinuteDisplay] = useState(2);
   const [secTensDisplay, setSecTensDisplay] = useState(0);
   const [secOnesDisplay, setSecOnesDisplay] = useState(0);
+  const [webcamDivDim, setWebcamDivDim] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
     if (time <= 0) {
@@ -39,6 +40,19 @@ const RecordComponent = () => {
     }
     setSecOnesDisplay(Math.ceil(seconds % 10));
   }, [time, pause]);
+
+  useEffect(() => {
+    if (webcamDivRef.current) {
+      setWebcamDivDim({
+        width: webcamDivRef.current.clientWidth,
+        height: webcamDivRef.current.clientHeight,
+      });
+      console.log(
+        webcamDivRef.current.clientWidth,
+        webcamDivRef.current.clientHeight
+      );
+    }
+  }, [webcamDivRef]);
 
   const handleBackend = async () => {
     if (recordedVideoChunks.length) {
@@ -123,7 +137,7 @@ const RecordComponent = () => {
 
   return (
     <div class="w-screen h-screen flex justify-start items-center flex lato flex-col bg-zinc-900 p-10px">
-      <div class="w-full h-[120px] bg-black rounded-md overflow-hidden text-white">
+      <div class="w-full h-[120px] bg-black rounded-md overflow-hidden text-white min-h-[120px]">
         <ProgressBar
           completed={time}
           isLabelVisible={false}
@@ -137,7 +151,7 @@ const RecordComponent = () => {
           class="w-full bg-black flex justify-between items-center pl-20px pr-10px"
           style={{ height: "calc(100% - 10px)" }}
         >
-          <div class="kanit text-[2rem] font-bold">
+          <div class="merriweather text-[2rem]">
             Why do you want to work at Google?
           </div>
           <div class="flex justify-center items-center kanit gap-10px bg-zinc-900 pt-5px pb-5px pl-10px pr-10px rounded-md">
@@ -161,24 +175,24 @@ const RecordComponent = () => {
           </div>
         </div>
       </div>
-      <div class="w-full h-full flex">
-        <div
-          class="w-5/6 h-full flex justify-center items-center pt-10px pr-5px"
-          ref={webcamDivRef}
-        >
-          <div class="w-full h-full bg-black rounded-md flex justify-center items-center p-10px">
+      <div class="w-full flex" style={{ height: "calc(100vh - 140px)" }}>
+        <div class="w-5/6 h-full flex justify-center items-center pt-10px pr-5px">
+          <div
+            class="w-full h-full bg-black rounded-md flex justify-center items-center p-10px overflow-hidden"
+            ref={webcamDivRef}
+          >
             <Webcam
               mirrored={true}
               audio={true}
               ref={webcamRef}
               muted={true}
-              class="border-black border-2 border-solid"
-              style={{
-                width: "calc(100% - 55px)",
-              }}
               videoConstraints={{
-                aspectRatio: "1.77",
+                width: webcamDivDim.width - 20,
+                height: webcamDivDim.height - 20,
+                facingMode: "user",
+                frameRate: 30,
               }}
+              class="border-black border-2 border-solid"
             />
           </div>
         </div>

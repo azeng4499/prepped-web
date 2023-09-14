@@ -6,6 +6,10 @@
   font-family: "Kanit", sans-serif;
 }
 
+.merriweather {
+  font-family: "Merriweather Sans", sans-serif;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

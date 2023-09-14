@@ -20,6 +20,7 @@ const ReviewComponent = () => {
 
   const [strengthsPointers, setStrengthsPointers] = useState();
   const [improvePointers, setImprovePointers] = useState();
+  const [rating, setRating] = useState(0);
 
   let formData = new FormData();
   formData.append("transcript", transcription);
@@ -31,12 +32,17 @@ const ReviewComponent = () => {
       body: formData,
     })
       .then((res) => {
+        console.log(res);
         return res.json();
       })
       .then((res) => {
         console.log(res);
         setStrengthsPointers(res.strengths);
         setImprovePointers(res.improvements);
+        setRating(res.rating);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
@@ -53,7 +59,7 @@ const ReviewComponent = () => {
           <div class="h-screen w-2/3">
             <div class="h-1/6 w-full pt-10px pr-5px pb-5px pl-10px">
               <div class="no-scrollbar h-full w-full bg-black rounded-md text-white overflow-scroll flex flex-col justify-center items-center gap-20px pr-20px pl-20px">
-                <div class="text-[2rem] kanit text-center font-bold w-full">
+                <div class="text-[2rem] merriweather text-center w-full">
                   Why do you want to work at Google?
                 </div>
                 <div class="w-full flex justify-between items-center bg-zinc-900 p-5px rounded-lg pl-20px pr-20px">
@@ -90,14 +96,22 @@ const ReviewComponent = () => {
               class="w-full pt-10px pr-10px pb-5px pl-5px"
               style={{ height: "calc(100vh * 1/10)" }}
             >
-              <div class="h-full w-full bg-black rounded-md flex justify-between items-center text-white p-20px">
-                <div class="flex gap-10px">
-                  <AiFillStar class="w-25px h-25px" />
-                  <AiFillStar class="w-25px h-25px" />
-                  <AiFillStar class="w-25px h-25px" />
-                  <AiOutlineStar class="w-25px h-25px" />
-                  <AiOutlineStar class="w-25px h-25px" />
-                </div>
+              <div
+                class="h-full w-full bg-black rounded-md flex items-center text-white p-20px"
+                style={{
+                  justifyContent: rating ? "space-between" : "flex-end",
+                }}
+              >
+                {rating !== 0 && (
+                  <div class="flex gap-10px">
+                    {[...Array(rating)].map((element) => {
+                      return <AiFillStar class="w-25px h-25px" />;
+                    })}
+                    {[...Array(5 - rating)].map((element) => {
+                      return <AiOutlineStar class="w-25px h-25px" />;
+                    })}
+                  </div>
+                )}
                 <div class="flex justify-center items-center gap-10px border-solid border-white border-b pb-5px cursor-pointer select-none">
                   Return Home <BsArrowRightSquareFill />
                 </div>
