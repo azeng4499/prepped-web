@@ -1,89 +1,33 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { MaterialReactTable } from "material-react-table";
 
-const data = [
-  {
-    name: {
-      firstName: "John",
-      lastName: "Doe",
-    },
-    address: "261 Erdman Ford",
-    city: "East Daphne",
-    state: "Kentucky",
-  },
-  {
-    name: {
-      firstName: "Jane",
-      lastName: "Doe",
-    },
-    address: "769 Dominic Grove",
-    city: "Columbus",
-    state: "Ohio",
-  },
-  {
-    name: {
-      firstName: "Joe",
-      lastName: "Doe",
-    },
-    address: "566 Brakus Inlet",
-    city: "South Linda",
-    state: "West Virginia",
-  },
-  {
-    name: {
-      firstName: "Kevin",
-      lastName: "Vandy",
-    },
-    address: "722 Emie Stream",
-    city: "Lincoln",
-    state: "Nebraska",
-  },
-  {
-    name: {
-      firstName: "Joshua",
-      lastName: "Rolluffs",
-    },
-    address: "32188 Larkin Turnpike",
-    city: "Charleston",
-    state: "South Carolina",
-  },
-];
-
 const HomeComponent = () => {
-  const columns = useMemo(
-    () => [
-      {
-        accessorKey: "name.firstName", //access nested data with dot notation
-        header: "First Name",
-        size: 150,
-      },
-      {
-        accessorKey: "name.lastName",
-        header: "Last Name",
-        size: 150,
-      },
-      {
-        accessorKey: "address", //normal accessorKey
-        header: "Address",
-        size: 200,
-      },
-      {
-        accessorKey: "city",
-        header: "City",
-        size: 150,
-      },
-      {
-        accessorKey: "state",
-        header: "State",
-        size: 150,
-      },
-    ],
-    []
-  );
-
   return (
     <div class="w-screen h-screen flex justify-start items-center flex lato flex-col bg-zinc-900 p-10px">
-      <MaterialReactTable columns={columns} data={data} class="w-full" />
+      {/* <div class="w-full h-1/6 bg-blue-400 rounded-md"></div> */}
+      <div class="w-full h-full">
+        <div class="w-full pb-5px" style={{ height: "calc(100% * 1/10)" }}>
+          <div class="w-full h-full rounded-md bg-black"></div>
+        </div>
+        <div class="w-full pt-5px" style={{ height: "calc(100% * 9/10)" }}>
+          <div class="w-full h-full rounded-md bg-black text-white p-10px">
+            <table class="w-full h-content bg-blue-500">
+              <thead class="border-b">
+                <td>Question</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+              </thead>
+              <tr>
+                <td>hey</td>
+                <td>hey</td>
+                <td>hey</td>
+                <td>hey</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import HomeComponent from "./Components/HomeComponent";
 import { useSelector } from "react-redux";
 
 function App() {
-  // const url = useSelector((state) => state.url);
+  const url = useSelector((state) => state.url);
   // return url ? <ReviewComponent /> : <RecordComponent />;
   return <HomeComponent />;
 }
